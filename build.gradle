@@ -1,0 +1,71 @@
+group 'com.mike'
+version '1.0.0'
+
+apply plugin: 'groovy'
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+
+// war file creation functionality
+apply plugin: 'war'
+war {
+    baseName = 'myapp'
+    version =  '0.5.1'
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven { url "http://repo.spring.io/libs-snapshot" } //war file creation functionality
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.5.RELEASE")
+    }
+}
+
+configurations {
+    providedRuntime
+}
+
+dependencies {
+    //GROOVY TEST FRAMEWORKS
+    compile 'org.codehaus.groovy:groovy-all:2.4.4'
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile 'org.spockframework:spock-core:1.0-groovy-2.4'
+
+    //SPRING BOOT
+    compile('org.springframework.boot:spring-boot-starter-web:1.2.6.RELEASE')
+    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat") // war file creation functionality
+    // tag::actuator[]
+    compile('org.springframework.boot:spring-boot-starter-actuator:1.2.6.RELEASE')
+    // end::actuator[]
+    compile 'org.springframework.boot:spring-boot-starter-security:1.2.6.RELEASE' //todo figure out spring boot config
+
+    //DATABASE
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa:1.2.6.RELEASE'
+    compile 'org.hsqldb:hsqldb:2.3.1'
+    compile 'mysql:mysql-connector-java:5.1.36'
+
+    //ASSORTED DEPENDENCIES
+    compile "org.apache.commons:commons-lang3:3.4"
+
+    //Spring Security
+    //more info can be found here http://docs.spring.io/spring-security/site/docs/3.2.x/guides/helloworld.html
+//    compile 'org.springframework.security:spring-security-core:4.0.2.RELEASE'
+//    compile 'org.springframework.security:spring-security-web:4.0.2.RELEASE'
+//    compile 'org.springframework.security:spring-security-config:4.0.2.RELEASE'
+
+
+}
+
+//bootRepackage {
+//    mainClass = 'com.mike.Application'
+//}
